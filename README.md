@@ -37,9 +37,6 @@ npm run build
 npm run preview
 ```
 
-### Screenshots
-Add screenshots to help reviewers quickly understand the app. Place files in a `docs/` folder and reference them here.
-
 ```md
 ![Home](docs/home.png)
 ![Users List](docs/users-list.png)
@@ -47,7 +44,7 @@ Add screenshots to help reviewers quickly understand the app. Place files in a `
 ```
 
 ### Author / Contact
-Built by [Your Name] for React Internship Challenge.
+Built by Endrit Gecaj for React Internship Challenge.
 
-Feel free to reach out: `[your.email@example.com]` • `[LinkedIn/GitHub URL]`
+Feel free to reach out: `gecajendrit@gmail.com` • `(https://github.com/EndritG3)`
 
