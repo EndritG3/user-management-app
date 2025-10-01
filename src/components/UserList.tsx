@@ -1,17 +1,20 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import { addUser as addUserAction, deleteUser as deleteUserAction, fetchUsers, updateUser as updateUserAction } from '../store/usersSlice'
 
 type User = {
-  id: number | string
+  id: number
   name: string
   email: string
-  company: { name: string }
+  company?: { name: string }
 }
 
 export default function UserList() {
-  const [users, setUsers] = useState<User[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const dispatch = useAppDispatch()
+  const users = useAppSelector((s) => s.users.items)
+  const status = useAppSelector((s) => s.users.status)
+  const error = useAppSelector((s) => s.users.error)
   const [searchQuery, setSearchQuery] = useState('')
   const [nameInput, setNameInput] = useState('')
   const [emailInput, setEmailInput] = useState('')
@@ -20,26 +23,10 @@ export default function UserList() {
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
 
   useEffect(() => {
-    let isMounted = true
-
-    async function loadUsers() {
-      try {
-        const res = await fetch('https://jsonplaceholder.typicode.com/users')
-        if (!res.ok) throw new Error('Failed to fetch users')
-        const data: User[] = await res.json()
-        if (isMounted) setUsers(data)
-      } catch (e) {
-        if (isMounted) setError('Failed to load users')
-      } finally {
-        if (isMounted) setLoading(false)
-      }
+    if (status === 'idle') {
+      dispatch(fetchUsers())
     }
-
-    loadUsers()
-    return () => {
-      isMounted = false
-    }
-  }, [])
+  }, [status, dispatch])
 
   const filteredUsers = useMemo(() => {
     const query = searchQuery.trim().toLowerCase()
@@ -63,7 +50,7 @@ export default function UserList() {
     return copy
   }, [filteredUsers, sortField, sortDir])
 
-  if (loading) return <p>Loading users...</p>
+  if (status === 'loading') return <p>Loading users...</p>
   if (error) return <p>{error}</p>
 
   return (
@@ -98,7 +85,7 @@ export default function UserList() {
             email,
             company: { name: '' },
           }
-          setUsers((prev) => [newUser, ...prev])
+          dispatch(addUserAction(newUser))
           setNameInput('')
           setEmailInput('')
           setFormError(null)
@@ -162,6 +149,26 @@ export default function UserList() {
               </td>
               <td style={{ padding: '0.5rem' }}>{u.email}</td>
               <td style={{ padding: '0.5rem' }}>{u.company?.name}</td>
+              <td style={{ padding: '0.5rem' }}>
+                <button
+                  onClick={() => {
+                    const newName = window.prompt('New name', u.name)?.trim()
+                    const newEmail = window.prompt('New email', u.email)?.trim()
+                    if (!newName || !newEmail) return
+                    const emailValid = /\S+@\S+\.\S+/.test(newEmail)
+                    if (!emailValid) return
+                    dispatch(updateUserAction({ ...u, name: newName, email: newEmail }))
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => dispatch(deleteUserAction(u.id))}
+                  style={{ marginLeft: '0.5rem' }}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
