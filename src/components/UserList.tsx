@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 type User = {
   id: number
@@ -71,7 +72,9 @@ export default function UserList() {
         <tbody>
           {filteredUsers.map((u) => (
             <tr key={u.id}>
-              <td style={{ padding: '0.5rem' }}>{u.name}</td>
+              <td style={{ padding: '0.5rem' }}>
+                <Link to={`/users/${u.id}`}>{u.name}</Link>
+              </td>
               <td style={{ padding: '0.5rem' }}>{u.email}</td>
               <td style={{ padding: '0.5rem' }}>{u.company?.name}</td>
             </tr>
