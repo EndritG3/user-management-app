@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 type User = {
-  id: number
+  id: number | string
   name: string
   email: string
   company: { name: string }
@@ -13,6 +13,9 @@ export default function UserList() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [nameInput, setNameInput] = useState('')
+  const [emailInput, setEmailInput] = useState('')
+  const [formError, setFormError] = useState<string | null>(null)
 
   useEffect(() => {
     let isMounted = true
@@ -61,6 +64,58 @@ export default function UserList() {
           aria-label="Search users by name or email"
         />
       </div>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          const name = nameInput.trim()
+          const email = emailInput.trim()
+          if (!name || !email) {
+            setFormError('Name and Email are required')
+            return
+          }
+          const emailValid = /\S+@\S+\.\S+/.test(email)
+          if (!emailValid) {
+            setFormError('Please enter a valid email')
+            return
+          }
+          const newUser: User = {
+            id: Date.now(),
+            name,
+            email,
+            company: { name: '' },
+          }
+          setUsers((prev) => [newUser, ...prev])
+          setNameInput('')
+          setEmailInput('')
+          setFormError(null)
+        }}
+        style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start', marginBottom: '1rem', flexWrap: 'wrap' }}
+        aria-labelledby="add-user-heading"
+      >
+        <h2 id="add-user-heading" style={{ margin: 0, fontSize: '1.1rem', width: '100%' }}>Add User</h2>
+        <input
+          type="text"
+          placeholder="Name"
+          value={nameInput}
+          onChange={(e) => setNameInput(e.target.value)}
+          style={{ padding: '0.5rem', minWidth: '200px' }}
+          aria-label="Name"
+          required
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          value={emailInput}
+          onChange={(e) => setEmailInput(e.target.value)}
+          style={{ padding: '0.5rem', minWidth: '240px' }}
+          aria-label="Email"
+          required
+        />
+        <button type="submit" style={{ padding: '0.6rem 1rem' }}>Add</button>
+        {formError && (
+          <span role="alert" style={{ color: '#ff6b6b', alignSelf: 'center' }}>{formError}</span>
+        )}
+      </form>
       <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
         <thead>
           <tr>
