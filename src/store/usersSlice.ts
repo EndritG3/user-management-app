@@ -59,9 +59,9 @@ const usersSlice = createSlice({
         state.status = 'succeeded'
         state.items = action.payload
       })
-      .addCase(fetchUsers.rejected, (state) => {
+      .addCase(fetchUsers.rejected, (state, action) => {
         state.status = 'failed'
-        state.error = 'Failed to load users'
+        state.error = action.error.message || 'Failed to load users'
       })
   },
 })

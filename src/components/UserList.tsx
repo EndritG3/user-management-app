@@ -51,7 +51,12 @@ export default function UserList() {
   }, [filteredUsers, sortField, sortDir])
 
   if (status === 'loading') return <p>Loading users...</p>
-  if (error) return <p>{error}</p>
+  if (error) return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      <p style={{ margin: 0 }}>Error: {error}</p>
+      <button onClick={() => dispatch(fetchUsers())}>Retry</button>
+    </div>
+  )
 
   return (
     <div>

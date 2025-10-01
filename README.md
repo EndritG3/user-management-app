@@ -1,73 +1,53 @@
-# React + TypeScript + Vite
+## User Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Description
+A minimal, beginner-friendly React application for managing users. It demonstrates client-side routing, global state management, and basic CRUD-style interactions using a public API. You can browse and search users, view a details page, add a user locally, sort the list, and update or delete users via Redux state.
 
-Currently, two official plugins are available:
+### Features
+- **Fetch users**: Loads users from `https://jsonplaceholder.typicode.com/users` with loading and error states.
+- **Search**: Real-time filtering by name or email.
+- **User details page**: View address (street, suite, city, zipcode), phone, and website.
+- **Add user form**: Client-side validation (required name and email), prepends to the list (local state via Redux store, no API).
+- **Sorting**: Sort by name or email, ascending/descending.
+- **Update/Delete (Redux)**: Edit user name/email and delete users using Redux Toolkit reducers.
+- **Routing**: Vite + React Router for `Home`, `Users`, and `User Details` routes.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Tech Stack
+- **React** 19
+- **Vite** (fast dev server and build)
+- **React Router** 7
+- **Redux Toolkit** 2 + **React Redux** 9
+- **TypeScript** 5
+- Styling: minimal inline styles (no UI library)
 
-## React Compiler
+### Getting Started
+1. Clone the repository and install dependencies:
+```bash
+npm install
+```
+2. Start the development server:
+```bash
+npm run dev
+```
+The server will start on a local port (e.g., `http://localhost:5173` or `5174` if the default is in use).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+3. Build for production (optional):
+```bash
+npm run build
+npm run preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Screenshots
+Add screenshots to help reviewers quickly understand the app. Place files in a `docs/` folder and reference them here.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```md
+![Home](docs/home.png)
+![Users List](docs/users-list.png)
+![User Details](docs/user-details.png)
 ```
+
+### Author / Contact
+Built by [Your Name] for React Internship Challenge.
+
+Feel free to reach out: `[your.email@example.com]` • `[LinkedIn/GitHub URL]`
+
